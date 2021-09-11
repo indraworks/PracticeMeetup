@@ -46,15 +46,16 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-   
-    return _PostList(posts: _posts);
+    return _PostList(posts: _posts, createPost: _addPost);
   }
 }
 
 class _PostList extends StatelessWidget {
   final List<Post>? _posts;
+  final Function createPost;
   //posts params yg masuk dari atas
-  _PostList({required List<Post> posts}) : _posts = posts;
+  _PostList({required List<Post> posts, required this.createPost})
+      : _posts = posts;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,9 +81,30 @@ class _PostList extends StatelessWidget {
       bottomNavigationBar: BottomNavigation(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: createPost,
         tooltip: 'Add Post',
       ),
     );
   }
 }
+
+
+/*
+ktika kita pindahin scafol kebawah dan return adalah kosong dan diisi dngn 
+return _PostList(posts: _posts);
+maka kalo kita tekan tombol onPressed: () {}, ini masih kosong dan cara gimana?
+isi apa??
+caranya kita harus buat constructor di _PostList sbb:
+1) nah buat passing parameter utk function _addPost   dibagian return yg ada di class PostScreen ( yaitu di statenya class _PostScreenState)
+   sbb: return _PostList(posts: _posts,  createPost:_addPost);
+   ini supaya bisa masuk di class _PostList 
+
+2) nah diclass _PostList di constructornya kita pasang parameter karna yg masuk  type function 
+   maka declare dulu  var local bertye functuon sbb:final Function createPost
+   dan di construcroer pasang parameert fucntion nya :
+
+class _PostList extends StatelessWidget ({ 
+     required this.createPost
+  }): _posts = posts;
+
+*/
