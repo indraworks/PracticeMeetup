@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:practice_meetup/src/models/post.dart';
 import 'package:practice_meetup/src/services/post_api_provider.dart';
 import 'package:practice_meetup/src/widgets/BottomNavigation.dart';
+
 //http
 import 'package:http/http.dart' as http;
+import "package:faker/faker.dart";
 
 class PostScreen extends StatefulWidget {
   //instansiate  obj _api dri class PostApiProvider
@@ -32,6 +34,14 @@ class _PostScreenState extends State<PostScreen> {
     setState(() => _posts = posts);
   }
 
+  //adding post pake faker
+  _addPost() {
+    final id = faker.randomGenerator.integer(999);
+    final title = faker.food.dish();
+    final body = faker.food.cuisine();
+    final newPost = Post(title: title, body: body, id: id);
+  }
+
   @override
   Widget build(BuildContext context) {
     print('Iam calling build!');
@@ -45,7 +55,8 @@ class _PostScreenState extends State<PostScreen> {
       bottomNavigationBar: BottomNavigation(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: _addPost,
+        tooltip: 'Add Post',
       ),
     );
   }
