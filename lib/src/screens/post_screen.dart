@@ -46,21 +46,8 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('Iam calling build!');
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text('Post Screen'),
-        ),
-      ),
-      body: _PostList(posts: _posts),
-      bottomNavigationBar: BottomNavigation(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: _addPost,
-        tooltip: 'Add Post',
-      ),
-    );
+   
+    return _PostList(posts: _posts);
   }
 }
 
@@ -70,19 +57,32 @@ class _PostList extends StatelessWidget {
   _PostList({required List<Post> posts}) : _posts = posts;
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: _posts!.length * 2,
-        itemBuilder: (BuildContext context, int i) {
-          //tiap baris ganjil divider muncul
-          if (i.isOdd) {
-            return Divider();
-          }
-          final index = i ~/ 2;
-          //posts sudah dl bntuk obj
-          return ListTile(
-            title: Text(_posts![index].title),
-            subtitle: Text(_posts![index].body),
-          );
-        });
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text('Post Screen'),
+        ),
+      ),
+      body: ListView.builder(
+          itemCount: _posts!.length * 2,
+          itemBuilder: (BuildContext context, int i) {
+            //tiap baris ganjil divider muncul
+            if (i.isOdd) {
+              return Divider();
+            }
+            final index = i ~/ 2;
+            //posts sudah dl bntuk obj
+            return ListTile(
+              title: Text(_posts![index].title),
+              subtitle: Text(_posts![index].body),
+            );
+          }),
+      bottomNavigationBar: BottomNavigation(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+        tooltip: 'Add Post',
+      ),
+    );
   }
 }
