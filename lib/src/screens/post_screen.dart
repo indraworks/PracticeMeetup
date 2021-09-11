@@ -46,7 +46,22 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _PostList(posts: _posts, createPost: _addPost);
+    // return _PostList(posts: _posts, createPost: _addPost);
+    return _InheritedPost(
+        child: _PostList(posts: _posts, createPost: _addPost));
+  }
+}
+
+//mmbuat inheritedWidget
+
+class _InheritedPost extends StatelessWidget {
+  //const InheritedPost({ Key? key }) : super(key: key);
+  final Widget child;
+  _InheritedPost({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return child;
   }
 }
 
@@ -59,31 +74,37 @@ class _PostList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text('Post Screen'),
+        appBar: AppBar(
+          title: Center(
+            child: Text('Post Screen'),
+          ),
         ),
-      ),
-      body: ListView.builder(
-          itemCount: _posts!.length * 2,
-          itemBuilder: (BuildContext context, int i) {
-            //tiap baris ganjil divider muncul
-            if (i.isOdd) {
-              return Divider();
-            }
-            final index = i ~/ 2;
-            //posts sudah dl bntuk obj
-            return ListTile(
-              title: Text(_posts![index].title),
-              subtitle: Text(_posts![index].body),
-            );
-          }),
-      bottomNavigationBar: BottomNavigation(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: createPost,
-        tooltip: 'Add Post',
-      ),
+        body: ListView.builder(
+            itemCount: _posts!.length * 2,
+            itemBuilder: (BuildContext context, int i) {
+              //tiap baris ganjil divider muncul
+              if (i.isOdd) {
+                return Divider();
+              }
+              final index = i ~/ 2;
+              //posts sudah dl bntuk obj
+              return ListTile(
+                title: Text(_posts![index].title),
+                subtitle: Text(_posts![index].body),
+              );
+            }),
+        bottomNavigationBar: BottomNavigation(),
+        floatingActionButton: _PostButton());
+  }
+}
+
+class _PostButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () => {},
+      tooltip: 'Add Post',
     );
   }
 }
@@ -106,5 +127,9 @@ caranya kita harus buat constructor di _PostList sbb:
 class _PostList extends StatelessWidget ({ 
      required this.createPost
   }): _posts = posts;
+
+  //cara diatas gak jalan masih error utk onPress:createPost 
+  utk itu akalinya dgn inheritedWidget  sbb diaas caranya 
+  stlahnya kita nnti pakai cara library scopedmodel(next lecture)
 
 */
