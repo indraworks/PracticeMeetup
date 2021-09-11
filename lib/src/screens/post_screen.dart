@@ -59,14 +59,23 @@ class _PostList extends StatelessWidget {
   _PostList({required List<dynamic> posts}) : _posts = posts;
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      //yg kotak [ ] diganti langusng maping
-      children: _posts
-          .map((post) => ListTile(
-                title: Text(post['title']),
-                subtitle: Text(post['body']),
-              ))
-          .toList(),
-    );
+    //mapping diganti dengan ListBuilder
+    // return ListView(
+    //   //yg kotak [ ] diganti langusng maping
+    //   children: _posts
+    //       .map((post) => ListTile(
+    //             title: Text(post['title']),
+    //             subtitle: Text(post['body']),
+    //           ))
+    //       .toList(),
+    // );
+    return ListView.builder(
+        itemCount: _posts.length,
+        itemBuilder: (BuildContext context, int i) {
+          return ListTile(
+            title: Text(_posts[i]['title']),
+            subtitle: Text(_posts[i]['body']),
+          );
+        });
   }
 }
