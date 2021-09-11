@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_import, avoid_print
+// ignore_for_file: prefer_const_constructors, unused_import, avoid_print, unused_field, prefer_const_constructors_in_immutables
 
 import 'dart:convert';
 
@@ -19,16 +19,17 @@ class _PostScreenState extends State<PostScreen> {
   void initState() {
     super.initState();
 
-     //recode 
-    
+    _fetchPost();
+  }
 
+  void _fetchPost() {
     http.get(Uri.parse("https://jsonplaceholder.typicode.com/posts")).
         //tampng di then ktika slsi
         then((res) {
-           print(res.body);
-        final posts = json.decode(res.body);
-         print(posts);
-          //update state
+      //print(res.body);
+      final posts = json.decode(res.body);
+      //print(posts);
+      //update state
       setState(() => _post = posts);
     });
   }
@@ -42,11 +43,30 @@ class _PostScreenState extends State<PostScreen> {
           child: Text('Post Screen'),
         ),
       ),
+      body: _PostList(posts: _post),
       bottomNavigationBar: BottomNavigation(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {},
       ),
+    );
+  }
+}
+
+class _PostList extends StatelessWidget {
+  final List<dynamic> _posts;
+  //posts params yg masuk dari atas
+  _PostList({required List<dynamic> posts}) : _posts = posts;
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      //yg kotak [ ] diganti langusng maping
+      children: _posts
+          .map((post) => ListTile(
+                title: Text(post['title']),
+                subtitle: Text(post['body']),
+              ))
+          .toList(),
     );
   }
 }
