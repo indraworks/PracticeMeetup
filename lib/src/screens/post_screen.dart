@@ -41,9 +41,7 @@ class _PostScreenState extends State<PostScreen> {
     final body = faker.food.cuisine();
     final newPost = Post(title: title, body: body, id: id);
     //update state!
-    setState(()=> _posts.add(newPost);
-      
-    );
+    setState(() => _posts.add(newPost));
   }
 
   @override
