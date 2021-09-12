@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, unused_import
 
 import 'package:flutter/material.dart';
+import 'package:practice_meetup/src/screens/MeetupHomecreen.dart';
 import 'package:practice_meetup/src/screens/meetup_detail_screen.dart';
 import 'package:practice_meetup/src/screens/meetup_home_screen.dart';
 import 'package:practice_meetup/src/screens/post_screen.dart';
@@ -25,6 +26,7 @@ class EventMeetApp extends StatelessWidget {
         //declrate dulu  var route di meetDetall
         routes: {MeetupDetailScreen.route: (context) => MeetupDetailScreen()},
         // home: HomeScreen(title: AppTitle)
-        home: PostScreen());
+        // home: PostScreen());
+        home: MeetupHomeScreen());
   }
 }
