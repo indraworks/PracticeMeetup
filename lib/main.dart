@@ -5,6 +5,8 @@ import 'package:practice_meetup/src/screens/meetup_detail_screen.dart';
 import 'package:practice_meetup/src/screens/meetup_home_screen.dart';
 import 'package:practice_meetup/src/screens/post_screen.dart';
 
+// kalau runing wihtoud null safety ini aja dulu
+// flutter run --no-sound-null-safety //utk stiap flutter run !
 void main() {
   runApp(EventMeetApp());
 }
