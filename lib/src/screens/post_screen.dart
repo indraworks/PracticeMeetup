@@ -10,6 +10,7 @@ import 'package:practice_meetup/src/widgets/BottomNavigation.dart';
 //http
 import 'package:http/http.dart' as http;
 import "package:faker/faker.dart";
+//note final inheirted
 
 class PostScreen extends StatefulWidget {
   //instansiate  obj _api dri class PostApiProvider
@@ -46,33 +47,48 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return _PostList(posts: _posts, createPost: _addPost);
+    //return ke constructor _interitedPost
     return _InheritedPost(
-        child: _PostList(posts: _posts, createPost: _addPost));
+        posts: _posts, createPost: _addPost, child: _PostList());
+    // child: _PostList(posts: _posts, createPost: _addPost));
   }
 }
 
-//mmbuat inheritedWidget
+//mmbuat inheritedWidget yg merupakan anak dari  widget _PostScreenState
 
-class _InheritedPost extends StatelessWidget {
+class _InheritedPost extends InheritedWidget {
   //const InheritedPost({ Key? key }) : super(key: key);
   final Widget child;
-  _InheritedPost({required this.child});
+  final List<Post> posts;
+  final Function createPost;
+  _InheritedPost(
+      {required this.child, required this.posts, required this.createPost})
+      : super(child: child);
 
   @override
-  Widget build(BuildContext context) {
-    return child;
+  //notify widget child dibawah ny ajika ada perubahan _PostList
+  bool updateShouldNotify(InheritedWidget oldWidget) => true;
+  //pake static trus pake of(BuildContext context)
+  static _InheritedPost? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<_InheritedPost>();
   }
+  /*
+   static Name of(BuildContext context) {
+  return context.dependOnInheritedWidgetOfExactType<Name>();  //here
+}
+  */
 }
 
 class _PostList extends StatelessWidget {
-  final List<Post>? _posts;
-  final Function createPost;
-  //posts params yg masuk dari atas
-  _PostList({required List<Post> posts, required this.createPost})
-      : _posts = posts;
   @override
   Widget build(BuildContext context) {
+    //maksudnya posts yg fisini adalah sama dgn yg punya posts diatas _InheritedPost
+    // old:final posts = (context.dependOnInheritedWidgetOfExactType<_InheritedPost>()
+    //       as _InheritedPost).posts;
+
+    //new way:
+    final posts = _InheritedPost.of(context)?.posts;
+
     return Scaffold(
         appBar: AppBar(
           title: Center(
@@ -80,7 +96,7 @@ class _PostList extends StatelessWidget {
           ),
         ),
         body: ListView.builder(
-            itemCount: _posts!.length * 2,
+            itemCount: posts?.length * 2,
             itemBuilder: (BuildContext context, int i) {
               //tiap baris ganjil divider muncul
               if (i.isOdd) {
@@ -89,8 +105,8 @@ class _PostList extends StatelessWidget {
               final index = i ~/ 2;
               //posts sudah dl bntuk obj
               return ListTile(
-                title: Text(_posts![index].title),
-                subtitle: Text(_posts![index].body),
+                title: Text(posts[index].title),
+                subtitle: Text(posts[index].body),
               );
             }),
         bottomNavigationBar: BottomNavigation(),
@@ -103,12 +119,11 @@ class _PostButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       child: Icon(Icons.add),
-      onPressed: () => {},
+      onPressed: _InheritedPost.of(context).createPost,
       tooltip: 'Add Post',
     );
   }
 }
-
 
 /*
 ktika kita pindahin scafol kebawah dan return adalah kosong dan diisi dngn 
@@ -130,6 +145,54 @@ class _PostList extends StatelessWidget ({
 
   //cara diatas gak jalan masih error utk onPress:createPost 
   utk itu akalinya dgn inheritedWidget  sbb diaas caranya 
-  stlahnya kita nnti pakai cara library scopedmodel(next lecture)
+  stlahnya kita nnti pakai cara 
+  inherited widget 
+  library scopedmodel(next lecture)
+
+*/
+
+/*jalanya program dari atas ini berkisah inheritedwidget diatas:
+ pada  class PostScreen extends StatefulWidget :
+      kita ada data _posts = []
+      kit afetch kmudian tampung smua jason kedalam list diatas _posts = []
+      berdasarkan field2 yg ada ddi Pist model 
+      2. addPost() ini functionutk tambah data nah data didapat dari faker
+          ini dlm bntuk library gak perlu lagi http
+      3. datanya yg add tadi harus bisa ampil discreen
+          utk itu kita punya widgte inheiredPost  kita pasing di constructornya
+           return _InheritedPost(
+                   posts: _posts, createPost: _addPost, child: _PostList());
+
+     3) di class _InheritedPost extends InheritedWidget 
+        kita buat consructornya :
+        _InheritedPost(
+      {required this.child, required this.posts, required this.createPost})
+      : super(child: child);
+       
+       danjang lupa notify ke anak widgetnya dalma hal ini _PostList widget 
+       mmberi notify jia ada update disini pada child widget postList
+             @override
+             bool updateShouldNotify(InheritedWidget oldWidget) => true;  
+         
+
+
+*/
+
+/*Inherited Widget apa itu? jadi ini gak pake library penggambarannya adalah 
+ jika ada widget root atau parent dia declare sbgai inheritedwidget ( artinya widget saya ini bisa diturunkan 
+ kepada anak2 widget saya 
+ )
+ PostScreen
+ |
+ |
+ InheritedPost  addPost
+                posts     
+ |                       |
+ |                       |
+ PostList                |
+ |                      dipakai/diturnkan dari atas
+ |                       |
+ PostButton     addPost  |
+
 
 */
