@@ -1,0 +1,38 @@
+server endpoit 
+meetups 
+      /meetups (POST,GET,) 
+      /meetups/:{meetupId} (GET,PATCH/PUT)
+      /meetups/secret (GET)
+      /meetups/:meetupId/join  (POST)
+      /meetups/:meetupId/leave
+
+ categories
+       /categories (GET)
+ threads
+       /threads (GET,POST)
+
+  posts 
+       /posts (GET,POST)
+
+  users 
+       /users/login (POST)
+       /users/logout (POST)
+       /users/register (POST)
+       /users/me   (GET)
+
+  Models :
+      model: Category
+      model: Thread
+      model: Post
+      model: User
+      model: Meetup
+
+addmin gak ada??
+sumber :
+https://app.swaggerhub.com/apis/Jerga99/meetuper-api/1.0.0#
+
+ngtest pakai postman ,tanda {} di {meetupId} dkk nya adalah 
+query parameter cara pakai di postman http://localhost:3001/api/v1/posts?threadId="no threadid Id yg dicari"
+
+utk get  /meetups/:{meetupId} sama juga
+ http://localhost:3001/api/v1/meetup?meetupId="no threadid Id yg dicari"
