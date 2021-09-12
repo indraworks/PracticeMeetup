@@ -1,20 +1,19 @@
-// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, avoid_print
+// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, avoid_print, avoid_types_as_parameter_names, prefer_equal_for_default_values, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'dart:math';
 
 class MeetupHomeScreen extends StatefulWidget {
-  const MeetupHomeScreen({Key? key}) : super(key: key);
-
   @override
   _MeetupHomeScreenState createState() => _MeetupHomeScreenState();
 }
 
 class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
   List<CustomText> customTextList = [
-    CustomText(name: '1'),
-    CustomText(name: '2'),
-    CustomText(name: '3'),
+    CustomText(key: UniqueKey(), name: '1'),
+    CustomText(key: UniqueKey(), name: '2'),
+    CustomText(key: UniqueKey(), name: '3'),
+    CustomText(key: UniqueKey(), name: '4')
   ];
   _shuffleList() {
     setState(() {
@@ -50,8 +49,11 @@ class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
 class CustomText extends StatefulWidget {
   final String name;
   //buat constructor utk porperty nama pada saat isntansiate class CustomText
-  const CustomText({required this.name});
-
+  //const CustomText({required this.name}); old
+  //kita buat disini utk keys pada constrcutornya!
+  const CustomText({Key? key, required this.name}) : super(key: key);
+  //artiny buat param key yg bertypedata Key -->trus pasing ke rootclass variable
+  //lewat parameter key yaitu  super(key:key)
   @override
   _CustomTextState createState() => _CustomTextState();
 }
@@ -81,9 +83,19 @@ class _CustomTextState extends State<CustomText> {
 
 
 /*
-Keys 1:
-Belajar Foreach pada widget  
+Keys part 2
+Jadi gini pada diatas kita buat random utk stiap container warnanya berubah2 selalu random
+pemakaian next integer itu berdasarkan utk counter random dari colorlist (spnjajang maksimal mak lenght)
+nah integernya nagka berubah2  1,2,3  ->3,1,2 ngeshift nah tetapi si color gak berubah2
+utk itu di parent class kita kasih key pada customTextList 
+ List<CustomText> customTextList =
+  [CustomText(key: UniqueKey(), name: '1'),
+   CustomText(key: UniqueKey(), name: '2'), 
+   CustomText(key: UniqueKey(), name: '3')]; 
 
+nah sekarang di widget class anak  class _CustomTextState,
+pada konstruktornya kita wajib utk buat key !yg menunu pada parent ,
+jangan lupa pake super(key:key) krn kita ubah parent class
 
 
 */
