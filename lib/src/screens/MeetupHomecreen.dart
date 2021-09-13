@@ -39,7 +39,6 @@ class MeetupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var data2 = null;
     return Card(
         child: Column(
       mainAxisSize: MainAxisSize.min,
@@ -53,19 +52,16 @@ class MeetupCard extends StatelessWidget {
           title: Text('Meetup in NewYork'),
           subtitle: Text('Just some meetup destination'),
         ),
-        ButtonBarTheme(
-          data: data2,
-          child: ButtonBar(
-            children: [
-              TextButton(
-                child: Text(
-                  'Visit Meetup',
-                ),
-                onPressed: () {},
+        ButtonBar(
+          children: [
+            TextButton(
+              child: Text(
+                'Visit Meetup',
               ),
-              FlatButton(onPressed: () {}, child: Text('Favorite'))
-            ],
-          ),
+              onPressed: () {},
+            ),
+            FlatButton(onPressed: () {}, child: Text('Favorite'))
+          ],
         )
       ],
     ));
