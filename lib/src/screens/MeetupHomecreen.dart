@@ -1,7 +1,7 @@
-// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, avoid_print, avoid_types_as_parameter_names, prefer_equal_for_default_values, non_constant_identifier_names
+// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, avoid_print, avoid_types_as_parameter_names, prefer_equal_for_default_values, non_constant_identifier_names, deprecated_member_use, prefer_const_literals_to_create_immutables
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class MeetupHomeScreen extends StatefulWidget {
   @override
@@ -9,19 +9,6 @@ class MeetupHomeScreen extends StatefulWidget {
 }
 
 class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
-  List<CustomText> customTextList = [
-    CustomText(key: ValueKey("1"), name: '1'),
-    CustomText(key: ValueKey("2"), name: '2'),
-    CustomText(key: ValueKey("3"), name: '3'),
-    CustomText(key: ValueKey("4"), name: '4')
-  ];
-  _shuffleList() {
-    setState(() {
-      customTextList.shuffle(); //suffle ini utk pngambilan random
-      customTextList.forEach((e) => print(e.name));
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,18 +21,81 @@ class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
         // ignore: prefer_const_literals_to_create_immutables
         children: [
           Column(
-            children: customTextList,
+            children: [MeetupCard(), MeetupCard(), MeetupCard()],
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _shuffleList,
+        onPressed: () {},
       ),
     );
   }
 }
 
-//Widget CustomText
+//Widget MeetupCard()
+
+class MeetupCard extends StatelessWidget {
+  const MeetupCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var data2 = null;
+    return Card(
+        child: Column(
+      mainAxisSize: MainAxisSize.min,
+      // ignore: prefer_const_literals_to_create_immutables
+      children: [
+        ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(
+                'https://images.unsplash.com/photo-1512136146408-dab5f2ba8ebb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80'),
+          ),
+          title: Text('Meetup in NewYork'),
+          subtitle: Text('Just some meetup destination'),
+        ),
+        ButtonBarTheme(
+          data: data2,
+          child: ButtonBar(
+            children: [
+              TextButton(
+                child: Text(
+                  'Visit Meetup',
+                ),
+                onPressed: () {},
+              ),
+              FlatButton(onPressed: () {}, child: Text('Favorite'))
+            ],
+          ),
+        )
+      ],
+    ));
+  }
+}
+
+
+
+
+/*
+Keys part 2
+Jadi gini pada diatas kita buat random utk stiap container warnanya berubah2 selalu random
+pemakaian next integer itu berdasarkan utk counter random dari colorlist (spnjajang maksimal mak lenght)
+nah integernya nagka berubah2  1,2,3  ->3,1,2 ngeshift nah tetapi si color gak berubah2
+utk itu di parent class kita kasih key pada customTextList 
+ List<CustomText> customTextList =
+  [CustomText(key: UniqueKey(), name: '1'),
+   CustomText(key: UniqueKey(), name: '2'), 
+   CustomText(key: UniqueKey(), name: '3')]; 
+
+nah sekarang di widget class anak  class _CustomTextState,
+pada konstruktornya kita wajib utk buat key !yg menunu pada parent ,
+jangan lupa pake super(key:key) krn kita ubah parent class
+
+
+*/
+
+
+/*
+delete widget CustomText
 class CustomText extends StatefulWidget {
   final String name;
   //buat constructor utk porperty nama pada saat isntansiate class CustomText
@@ -57,7 +107,7 @@ class CustomText extends StatefulWidget {
   @override
   _CustomTextState createState() => _CustomTextState();
 }
-
+//delete class stf _CustomTextState
 class _CustomTextState extends State<CustomText> {
   List colors = [
     Colors.red,
@@ -80,22 +130,6 @@ class _CustomTextState extends State<CustomText> {
         child: Text('Custom Text of $color'), color: color, height: 150);
   }
 }
-
-
-/*
-Keys part 2
-Jadi gini pada diatas kita buat random utk stiap container warnanya berubah2 selalu random
-pemakaian next integer itu berdasarkan utk counter random dari colorlist (spnjajang maksimal mak lenght)
-nah integernya nagka berubah2  1,2,3  ->3,1,2 ngeshift nah tetapi si color gak berubah2
-utk itu di parent class kita kasih key pada customTextList 
- List<CustomText> customTextList =
-  [CustomText(key: UniqueKey(), name: '1'),
-   CustomText(key: UniqueKey(), name: '2'), 
-   CustomText(key: UniqueKey(), name: '3')]; 
-
-nah sekarang di widget class anak  class _CustomTextState,
-pada konstruktornya kita wajib utk buat key !yg menunu pada parent ,
-jangan lupa pake super(key:key) krn kita ubah parent class
 
 
 */
