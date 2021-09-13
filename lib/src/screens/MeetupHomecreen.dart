@@ -19,9 +19,8 @@ class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         // ignore: prefer_const_literals_to_create_immutables
         children: [
-          Column(
-            children: [_MeetupTitle(), _MeetupList()],
-          ),
+          _MeetupTitle(), //judul atas gak gerak widgetnya
+          _MeetupList(), //ini list gerak /scroll kebawah spajang itemCount maksimalnya
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -42,7 +41,7 @@ class _MeetupTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(10),
       child: Text(
         'Featured Meetup',
         style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -101,6 +100,7 @@ class _MeetupList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
+          shrinkWrap: true,
           itemCount: meetupCardList.length * 2,
           itemBuilder:
               //itembuilder adalah looping widget yg mau dibuat listnya
