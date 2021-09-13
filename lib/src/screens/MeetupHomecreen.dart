@@ -1,6 +1,5 @@
-// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, avoid_print, avoid_types_as_parameter_names, prefer_equal_for_default_values, non_constant_identifier_names, deprecated_member_use, prefer_const_literals_to_create_immutables
+// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, avoid_print, avoid_types_as_parameter_names, prefer_equal_for_default_values, non_constant_identifier_names, deprecated_member_use, prefer_const_literals_to_create_immutables, empty_statements, unused_local_variable
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MeetupHomeScreen extends StatefulWidget {
@@ -21,7 +20,7 @@ class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
         // ignore: prefer_const_literals_to_create_immutables
         children: [
           Column(
-            children: [MeetupCard(), MeetupCard(), MeetupCard()],
+            children: [_MeetupTitle(), _MeetupList()],
           ),
         ],
       ),
@@ -32,11 +31,27 @@ class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
   }
 }
 
-//Widget MeetupCard()
+//bab 8 meetupCard diganti private _MeetupTitle
+//dimana _MeetupTitle punya list didalamnya ada _MeetupCard (individu2)
+//dimana MeeetupCard ini ditaruh di ListView di  _MEetupTitle!
 
-class MeetupCard extends StatelessWidget {
-  const MeetupCard({Key? key}) : super(key: key);
+class _MeetupTitle extends StatelessWidget {
+  //const MeetupCard({Key? key}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.all(20),
+      child: Text(
+        'Featured Meetup',
+        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class _MeetupCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -52,6 +67,7 @@ class MeetupCard extends StatelessWidget {
           title: Text('Meetup in NewYork'),
           subtitle: Text('Just some meetup destination'),
         ),
+        //make it buttonbar only depreacted the ButtonTheme.bar!
         ButtonBar(
           children: [
             TextButton(
@@ -68,8 +84,35 @@ class MeetupCard extends StatelessWidget {
   }
 }
 
+//_MeetupList
+class _MeetupList extends StatelessWidget {
+  //declare variable meetupCardList yg mrupakan List yg indivdunya berupa bertipe data widget _MeetupCard
 
+  final List<_MeetupCard> meetupCardList = [
+    _MeetupCard(),
+    _MeetupCard(),
+    _MeetupCard(),
+    _MeetupCard(),
+    _MeetupCard(),
+    _MeetupCard()
+  ];
 
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+          itemCount: meetupCardList.length * 2,
+          itemBuilder:
+              //itembuilder adalah looping widget yg mau dibuat listnya
+              (BuildContext context, int i) {
+            if (i.isOdd) return Divider();
+            final index = i ~/ 2;
+            //rendernya berupa tiap2 index dari widget  meetupCardList
+            return meetupCardList[index];
+          }),
+    );
+  }
+}
 
 /*
 Keys part 2
@@ -88,7 +131,6 @@ jangan lupa pake super(key:key) krn kita ubah parent class
 
 
 */
-
 
 /*
 delete widget CustomText
