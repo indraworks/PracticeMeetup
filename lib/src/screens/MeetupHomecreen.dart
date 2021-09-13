@@ -5,6 +5,12 @@ import 'package:practice_meetup/src/models/meetup.dart';
 import 'package:practice_meetup/src/screens/meetup_detail_screen.dart';
 import 'package:practice_meetup/src/services/meetup_api_service.dart';
 
+// class MeetupDetailArguments {
+//   final String? id ;
+
+//   MeetupDetailArguments({required this.id});
+// }
+
 class MeetupHomeScreen extends StatefulWidget {
   //instansiate variable class API
   MeetupService _api = MeetupService();
@@ -95,13 +101,18 @@ class _MeetupCard extends StatelessWidget {
         ButtonBar(
           children: [
             TextButton(
-              child: Text(
-                'Visit Meetup',
-              ),
-              onPressed: () {
-                Navigator.pushNamed(context, MeetupDetailScreen.route);
-              },
-            ),
+                child: Text(
+                  'Visit Meetup',
+                ),
+                onPressed: () {
+                  // //old  Navigator.pushNamed(context, MeetupDetailScreen.route);
+                  // Navigator.pushNamed(context, MeetupDetailScreen.route,
+                  //     arguments: meetup.id);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return MeetupDetailScreen(meetupId: meetup.id);
+                  }));
+                }),
             FlatButton(onPressed: () {}, child: Text('Favorite'))
           ],
         )
@@ -135,3 +146,32 @@ class _MeetupList extends StatelessWidget {
     );
   }
 }
+
+
+/* SEnding MeetupId sebgai argument ,jadi ktika di klik index meetupCard(meetup:metuplist[index])
+ maka akan menuju ke mettup_detail screen dan menampilkan tulisan meetupId 
+ caranya diclass file main.dart atau class EventApp 
+ dibagian GenerateRoute  dideclare meetupDetailArguments sbb:
+ final MeetupDetailArguments  arguments = settings.arguments;
+
+  return builder: (context) => MeetupDetailScreen(meetupId: arguments.id)
+  //pengembalian masuk ke meetupDetailScreen melalui param meetupId
+
+//note MeetupDetailArguments mrupakan class  
+// yg punya metode construct melalukan id ,ini class dibuat di MeetupHomeScreen page
+
+
+ //sebelunya:
+ //Note :mstinya gak perlu sampai bikin kelas ini langsung aha
+//MeetupDetailArguments sndiri merupakan class yg ada di MeetupHomeScreen
+class MeetupDetailArguments {
+  final String id;
+  //cosntruct
+  MeetupDetailArguments({required this.id})
+}
+//diMeetupHomeScreen ganti Navigator.pushedName nya kita tambahan argument salain ngarah kepage bawa argument
+Navigator.pushNamed(contex,MeetupDetailScreen.route,
+arguments:MeetupDetailArguments(id:meetup.id));
+
+
+*/
