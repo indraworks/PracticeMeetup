@@ -2,9 +2,9 @@
 
 import 'package:http/http.dart' as http;
 import 'dart:convert'; //json convert
-import 'dart:io' show Platform;//pilhan? ios:droid
+import 'dart:io' show Platform; //pilhan? ios:droid
 
-import 'package:practice_meetup/src/models/meetup.dart'; 
+import 'package:practice_meetup/src/models/meetup.dart';
 
 class MeetupService {
   //isntansiate dgn statuic dari constructor MeetupService
@@ -22,10 +22,9 @@ class MeetupService {
       : 'http://10.0.2.2:3001/api';
   //fecth data meetup from server
   Future<List<Meetup>> fetchMeetups() async {
-    final  res = await http.get(Uri.parse('$url/meetups')); //nodejs server
+    final res = await http.get(Uri.parse('$url/meetups')); //nodejs server
     final List parsedMeetups = json.decode(res.body);
     //maping ke List ambil valuenya
-    return parsedMeetups.map((item)=> Meetup.fromJSON(item)).toList()
+    return parsedMeetups.map((item) => Meetup.fromJSON(item)).toList();
   }
-
 }

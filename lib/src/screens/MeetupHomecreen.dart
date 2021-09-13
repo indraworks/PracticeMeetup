@@ -1,13 +1,34 @@
-// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, avoid_print, avoid_types_as_parameter_names, prefer_equal_for_default_values, non_constant_identifier_names, deprecated_member_use, prefer_const_literals_to_create_immutables, empty_statements, unused_local_variable
+// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, avoid_print, avoid_types_as_parameter_names, prefer_equal_for_default_values, non_constant_identifier_names, deprecated_member_use, prefer_const_literals_to_create_immutables, empty_statements, unused_local_variable, unnecessary_this, prefer_const_constructors_in_immutables, annotate_overrides
 
 import 'package:flutter/material.dart';
+import 'package:practice_meetup/src/models/meetup.dart';
+import 'package:practice_meetup/src/services/meetup_api_service.dart';
 
 class MeetupHomeScreen extends StatefulWidget {
+  //instansiate variable class API
+  MeetupService _api = MeetupService();
+
   @override
   _MeetupHomeScreenState createState() => _MeetupHomeScreenState();
 }
 
 class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
+  //declare var list meetup utk diisi
+  List<Meetup> meetups = [];
+
+  //initstate call _fetchmeetup
+  @override
+  initState() {
+    super.initState();
+    _fetchMeetups();
+  }
+
+  _fetchMeetups() async {
+    final meetupsData = await widget._api.fetchMeetups();
+    //update state
+    setState(() => this.meetups = meetupsData);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +40,8 @@ class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         // ignore: prefer_const_literals_to_create_immutables
         children: [
-          _MeetupTitle(), //judul atas gak gerak widgetnya
-          _MeetupList(), //ini list gerak /scroll kebawah spajang itemCount maksimalnya
+          _MeetupTitle(),
+          _MeetupList(meetups: meetups),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -51,7 +72,11 @@ class _MeetupTitle extends StatelessWidget {
 }
 
 class _MeetupCard extends StatelessWidget {
+  final Meetup meetup;
+  //constructor pasing meetupList perindex
+
   @override
+  _MeetupCard({required this.meetup});
   Widget build(BuildContext context) {
     return Card(
         child: Column(
@@ -60,11 +85,10 @@ class _MeetupCard extends StatelessWidget {
       children: [
         ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(
-                'https://images.unsplash.com/photo-1512136146408-dab5f2ba8ebb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80'),
+            backgroundImage: NetworkImage(meetup.image),
           ),
-          title: Text('Meetup in NewYork'),
-          subtitle: Text('Just some meetup destination'),
+          title: Text(meetup.title),
+          subtitle: Text(meetup.description),
         ),
         //make it buttonbar only depreacted the ButtonTheme.bar!
         ButtonBar(
@@ -85,30 +109,25 @@ class _MeetupCard extends StatelessWidget {
 
 //_MeetupList
 class _MeetupList extends StatelessWidget {
-  //declare variable meetupCardList yg mrupakan List yg indivdunya berupa bertipe data widget _MeetupCard
+  //var local list meetup
+  final List<Meetup> meetups;
 
-  final List<_MeetupCard> meetupCardList = [
-    _MeetupCard(),
-    _MeetupCard(),
-    _MeetupCard(),
-    _MeetupCard(),
-    _MeetupCard(),
-    _MeetupCard()
-  ];
+  //meetups yg didapat dari api di jadikan param di cosntructor
+  
+  _MeetupList({required this.meetups});
 
-  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
           shrinkWrap: true,
-          itemCount: meetupCardList.length * 2,
+          itemCount: meetups.length * 2,
           itemBuilder:
               //itembuilder adalah looping widget yg mau dibuat listnya
               (BuildContext context, int i) {
             if (i.isOdd) return Divider();
             final index = i ~/ 2;
             //rendernya berupa tiap2 index dari widget  meetupCardList
-            return meetupCardList[index];
+            return _MeetupCard(meetup: meetups[index]);
           }),
     );
   }
