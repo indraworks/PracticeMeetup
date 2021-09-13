@@ -34,7 +34,7 @@ class Meetup {
         this.joinedPeopleCount = parsedJson['joinedPeopleCount'] ?? 0,
         this.createdAt = parsedJson['createdAt'] ?? '',
         this.updateAt = parsedJson['updateAt'] ?? '',
-        this.category = parsedJson['category'] ?? '';
+        this.category = Category.fromJSON(parsedJson['category'] ?? '');
   //this.meetupCreator =
   //this.joindedPeople =
 }

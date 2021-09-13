@@ -19,14 +19,20 @@ class EventMeetApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "this for EventMeet App",
-        theme: ThemeData(primarySwatch: Colors.blue),
-        //buat route
-        // routes: {"/meetupDetail": (context) => MeetupDetailScreen()},
-        //declrate dulu  var route di meetDetall
-        routes: {MeetupDetailScreen.route: (context) => MeetupDetailScreen()},
-        // home: HomeScreen(title: AppTitle)
-        // home: PostScreen());
-        home: MeetupHomeScreen());
+      title: "this for EventMeet App",
+      theme: ThemeData(primarySwatch: Colors.blue),
+      // old
+      //buat route
+      // routes: {"/meetupDetail": (context) => MeetupDetailScreen()},
+      //declrate dulu  var route di meetDetall
+      // routes: {MeetupDetailScreen.route: (context) => MeetupDetailScreen()},
+      //end old
+
+      home: MeetupHomeScreen(),
+      //Generate Route
+      onGenerateRoute: (RouteSettings settings) {
+        return MaterialPageRoute(builder: (context) => MeetupDetailScreen());
+      },
+    );
   }
 }

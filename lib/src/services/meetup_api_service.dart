@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, avoid_print
 
 import 'package:http/http.dart' as http;
 import 'dart:convert'; //json convert
@@ -17,12 +17,16 @@ class MeetupService {
   MeetupService._internal();
 
   //Platform
+  // final String url = Platform.isIOS
+  //     ? 'http://localhost:3001/api/v1'
+  //     : 'http://10.0.2.2:3001/api';
   final String url = Platform.isIOS
       ? 'http://localhost:3001/api/v1'
-      : 'http://10.0.2.2:3001/api';
+      : 'http://10.0.2.2:3001/api/v1';
   //fecth data meetup from server
   Future<List<Meetup>> fetchMeetups() async {
     final res = await http.get(Uri.parse('$url/meetups')); //nodejs server
+    print(res);
     final List parsedMeetups = json.decode(res.body);
     //maping ke List ambil valuenya
     return parsedMeetups.map((item) => Meetup.fromJSON(item)).toList();
