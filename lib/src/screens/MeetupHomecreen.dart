@@ -21,7 +21,7 @@ class MeetupHomeScreen extends StatefulWidget {
 
 class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
   //declare var list meetup utk diisi
-  List<Meetup> meetups = [];
+  List<Meetup>? meetups = [];
 
   //initstate call _fetchmeetup
   @override
@@ -82,7 +82,7 @@ class _MeetupTitle extends StatelessWidget {
 
 //urut2
 class _MeetupCard extends StatelessWidget {
-  final Meetup? meetup;
+  Meetup? meetup;
 
   //constructor pasing meetupList perindex
   @override
@@ -138,7 +138,7 @@ class _MeetupCard extends StatelessWidget {
 //jadi di buildCard masing2 berasarkan nomor meetups[index] typedata string
 class _MeetupList extends StatelessWidget {
   //var local list meetups
-  final List<Meetup> meetups;
+  List<Meetup>? meetups;
 
   //meetups yg didapat dari api di jadikan param di cosntructor
 
@@ -148,14 +148,14 @@ class _MeetupList extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
           shrinkWrap: true,
-          itemCount: meetups.length * 2,
+          itemCount: meetups!.length * 2,
           itemBuilder:
               //itembuilder adalah looping widget yg mau dibuat listnya
               (BuildContext context, int i) {
             if (i.isOdd) return Divider();
             final index = i ~/ 2;
             //rendernya berupa tiap2 index dari widget  meetupCardList
-            return _MeetupCard(meetup: meetups[index]);
+            return _MeetupCard(meetup: meetups![index]);
           }),
     );
   }

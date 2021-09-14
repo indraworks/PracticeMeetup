@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_declarations, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print, annotate_overrides, sized_box_for_whitespace, avoid_unnecessary_containers, unnecessary_null_comparison
+// ignore_for_file: prefer_const_constructors, prefer_const_declarations, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print, annotate_overrides, sized_box_for_whitespace, avoid_unnecessary_containers, unnecessary_null_comparison, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:practice_meetup/src/models/meetup.dart';
@@ -9,7 +9,7 @@ import 'package:practice_meetup/src/services/meetup_api_service.dart';
 
 class MeetupDetailScreen extends StatefulWidget {
   static final String route = '/meetupDetail';
-  late final String meetupId;
+  late String meetupId;
   final MeetupService api = MeetupService(); //instasiate api
   //construct
   MeetupDetailScreen({required this.meetupId});
@@ -21,7 +21,7 @@ class MeetupDetailScreen extends StatefulWidget {
 class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
   //tmpat olah state di namaclass"state"
   //buat variable meetup bertipe Meetup class Model
-  late Meetup? meetup;
+  late Meetup meetup;
 
   initState() {
     super.initState();
@@ -52,6 +52,7 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
               children: <Widget>[
                 HeaderSection(meetup: meetup),
                 TitleSection(meetup: meetup),
+                AdditionalSection(meetup: meetup),
               ],
             )
           : Container(width: 0, height: 0),
@@ -61,9 +62,9 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
 }
 
 class HeaderSection extends StatelessWidget {
-  final Meetup? meetup; //buat variable dari Meetup Model Class bernama meetup
+  Meetup? meetup; //buat variable dari Meetup Model Class bernama meetup
   //construct
-  const HeaderSection({required this.meetup});
+  HeaderSection({required this.meetup});
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +98,7 @@ class HeaderSection extends StatelessWidget {
 }
 
 class TitleSection extends StatelessWidget {
-  final Meetup? meetup;
+  Meetup? meetup;
 
   TitleSection({required this.meetup});
 
@@ -124,6 +125,52 @@ class TitleSection extends StatelessWidget {
   }
 }
 
+class AdditionalSection extends StatelessWidget {
+  Meetup? meetup;
+  AdditionalSection({required this.meetup});
+  //buat function buildcolumn yg masing2 passing  label,text,color
+  //disini ada 3 colum judul Category,waktu from,watu To/end
+  String _capitalize(String word) {
+    return (word != null && word.isNotEmpty)
+        ? word[0].toUpperCase() + word.substring(1)
+        : "";
+  }
+
+  _buildColumn(String label, String text, Color color) {
+    return Column(
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+              fontSize: 13.0, fontWeight: FontWeight.w400, color: color),
+        ),
+        Text(
+          _capitalize(text),
+          style: TextStyle(
+              fontSize: 25.0, fontWeight: FontWeight.w500, color: color),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //warna color ikut warna theme
+    Color color = Theme.of(context).primaryColor;
+    return Row(
+      //pake row didalamnya berjajar 3 column
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildColumn('CATEGORY', meetup!.category.name, color),
+        _buildColumn('START', meetup!.timeFrom, color),
+        _buildColumn('FROM', meetup!.timeTo, color)
+      ],
+    );
+  }
+}
+
+
+
 
 /*
 Ada Error knpa bisa eror ya karena di _MeetuDetailScreenState kita declare variable Meetup meetup
@@ -135,6 +182,17 @@ jika masih null maka munculkan coontainer wdth 0 dan height null
 jika ada sudah trisi api ,data meetupnya pasing e HeaderSection (meetup)
 ok??:D
 
+
+
+*/
+
+/*
+contoh buat inisialisasi
+You can change it to :
+
+MyData data = MyData(); //by initializing it.
+//or by making it nullable.
+MyData? data;
 
 
 */

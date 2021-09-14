@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_this
+// ignore_for_file: unnecessary_this, unused_element
 
 import 'package:practice_meetup/src/models/category.dart';
 
@@ -16,10 +16,10 @@ class Meetup {
   final String timeTo;
   final String createdAt;
   final String updateAt;
-  int joinedPeopleCount;
+ late int joinedPeopleCount;
   // final User meetupCreator;
   // final List<User> joinedPeople;
-
+ 
   Meetup.fromJSON(Map<String, dynamic> parsedJson)
       : this.id = parsedJson['_id'],
         this.proccessedLocation = parsedJson['proccessedLocation '] ?? '',
@@ -37,4 +37,6 @@ class Meetup {
         this.category = Category.fromJSON(parsedJson['category'] ?? '');
   //this.meetupCreator =
   //this.joindedPeople =
+
+  
 }
