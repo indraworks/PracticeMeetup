@@ -15,6 +15,8 @@ void main() {
 
 class EventMeetApp extends StatelessWidget {
   final String AppTitle = "EventMeet App";
+
+  const EventMeetApp({Key? key}) : super(key: key);
   //const EventMeetApp({Key? key}) : super(key: key);
   // late final String id;
   @override

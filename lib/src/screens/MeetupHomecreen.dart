@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, avoid_print, avoid_types_as_parameter_names, prefer_equal_for_default_values, non_constant_identifier_names, deprecated_member_use, prefer_const_literals_to_create_immutables, empty_statements, unused_local_variable, unnecessary_this, prefer_const_constructors_in_immutables, annotate_overrides, must_be_immutable, prefer_final_fields
+// ignore_for_file: file_names, prefer_const_constructors, use_key_in_widget_constructors, avoid_function_literals_in_foreach_calls, avoid_print, avoid_types_as_parameter_names, prefer_equal_for_default_values, non_constant_identifier_names, deprecated_member_use, prefer_const_literals_to_create_immutables, empty_statements, unused_local_variable, unnecessary_this, prefer_const_constructors_in_immutables, annotate_overrides, must_be_immutable, prefer_final_fields, avoid_unnecessary_containers, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
 import 'package:practice_meetup/src/models/meetup.dart';
@@ -82,7 +82,7 @@ class _MeetupTitle extends StatelessWidget {
 
 //urut2
 class _MeetupCard extends StatelessWidget {
-  final Meetup meetup;
+  final Meetup? meetup;
 
   //constructor pasing meetupList perindex
   @override
@@ -90,36 +90,43 @@ class _MeetupCard extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Card(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      // ignore: prefer_const_literals_to_create_immutables
-      children: [
-        ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(meetup.image),
-          ),
-          title: Text(meetup.title),
-          subtitle: Text(meetup.description),
-        ),
-        //make it buttonbar only depreacted the ButtonTheme.bar!
-        ButtonBar(
-          children: [
-            TextButton(
-                child: Text(
-                  'Visit Meetup',
+        child: meetup != null
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(meetup!.image),
+                    ),
+                    title: Text(meetup!.title),
+                    subtitle: Text(meetup!.description),
+                  ),
+                  //make it buttonbar only depreacted the ButtonTheme.bar!
+                  ButtonBar(
+                    children: [
+                      TextButton(
+                          child: Text(
+                            'Visit Meetup',
+                          ),
+                          onPressed: () {
+                            //ktika di klik maka push ke halamanlayar2
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return MeetupDetailScreen(meetupId: meetup!.id);
+                            }));
+                          }),
+                      FlatButton(onPressed: () {}, child: Text('Favorite'))
+                    ],
+                  )
+                ],
+              )
+            : Container(
+                child: SizedBox(
+                  width: 0,
+                  height: 0,
                 ),
-                onPressed: () {
-                  //ktika di klik maka push ke halamanlayar2
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return MeetupDetailScreen(meetupId: meetup.id);
-                  }));
-                }),
-            FlatButton(onPressed: () {}, child: Text('Favorite'))
-          ],
-        )
-      ],
-    ));
+              ));
   }
 }
 

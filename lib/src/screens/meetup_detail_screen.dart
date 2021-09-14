@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_declarations, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print
+// ignore_for_file: prefer_const_constructors, prefer_const_declarations, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print, annotate_overrides, sized_box_for_whitespace, avoid_unnecessary_containers, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
+import 'package:practice_meetup/src/models/meetup.dart';
 import 'package:practice_meetup/src/widgets/BottomNavigation.dart';
 import 'package:practice_meetup/src/services/meetup_api_service.dart';
 //fetch meetup by id di detail_screen ambil /fetch based id dari server
@@ -8,7 +9,7 @@ import 'package:practice_meetup/src/services/meetup_api_service.dart';
 
 class MeetupDetailScreen extends StatefulWidget {
   static final String route = '/meetupDetail';
-  final String meetupId;
+  late final String meetupId;
   final MeetupService api = MeetupService(); //instasiate api
   //construct
   MeetupDetailScreen({required this.meetupId});
@@ -19,6 +20,9 @@ class MeetupDetailScreen extends StatefulWidget {
 
 class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
   //tmpat olah state di namaclass"state"
+  //buat variable meetup bertipe Meetup class Model
+  late Meetup? meetup;
+
   initState() {
     super.initState();
     _fetchMeetup();
@@ -29,6 +33,10 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
     final meetup = await widget.api.fetchMeetupById(widget.meetupId);
     print(meetup.title);
     print(meetup.description);
+    //jgn lupa update statenya klo udah dapat datanya!!!
+    setState(() => this.meetup = meetup
+        //data dari api,var meetup dimasukan kedlm var model meetup,atau dgn katalain ubah statenya
+        );
   }
 
   @override
@@ -39,17 +47,94 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
           child: Text('Meetup Detail'),
         ),
       ),
-      body: Center(
-        child: Text(widget.meetupId),
-      ),
+      body: meetup != null
+          ? Column(
+              children: <Widget>[
+                HeaderSection(meetup: meetup),
+                TitleSection(meetup: meetup),
+              ],
+            )
+          : Container(width: 0, height: 0),
       bottomNavigationBar: BottomNavigation(),
     );
   }
 }
 
+class HeaderSection extends StatelessWidget {
+  final Meetup? meetup; //buat variable dari Meetup Model Class bernama meetup
+  //construct
+  const HeaderSection({required this.meetup});
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    return Stack(
+      alignment: AlignmentDirectional.bottomStart,
+      children: [
+        Image.network(meetup!.image,
+            width: width, height: 240, fit: BoxFit.cover),
+        Container(
+          width: width,
+          decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
+          child: Padding(
+            padding: EdgeInsets.only(top: 20, bottom: 20),
+            child: ListTile(
+                leading: CircleAvatar(
+                    radius: 30.0,
+                    backgroundImage: NetworkImage(
+                        'https://cdn1.vectorstock.com/i/thumb-large/82/55/anonymous-user-circle-icon-vector-18958255.jpg')),
+                title: Text(meetup!.title,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amberAccent))),
+          ),
+        ),
+        //buat
+      ],
+    );
+  }
+}
+
+class TitleSection extends StatelessWidget {
+  final Meetup? meetup;
+
+  TitleSection({required this.meetup});
+
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.all(30.0),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(meetup!.title,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(meetup!.shortInfo,
+                      style: TextStyle(color: Colors.grey[500]))
+                ],
+              ),
+            ),
+            Icon(Icons.people, color: Colors.blue[500]),
+            Text('${meetup!.joinedPeopleCount} People')
+          ],
+        ));
+  }
+}
+
+
 /*
-jlnanya program stlah menrima argument navigator.push dari Homecreen ke detailScreen 
-argument yg dibawa adalah meetup.id
+Ada Error knpa bisa eror ya karena di _MeetuDetailScreenState kita declare variable Meetup meetup
+isinya masih undefined nul tidak ada waktu masih restart,saat trima blum trima api
+pada saat ada push dari HomeScren di push kondisi Meetup meetup msih blum ada data
+nah dia masuk langsug ke headerSection ngerender image makanya hasilnya error 
+utk itu kita harus kasih jeda dan if then else /check kalau Meetup meetup ini masih null atau suadh trisi data api
+jika masih null maka munculkan coontainer wdth 0 dan height null 
+jika ada sudah trisi api ,data meetupnya pasing e HeaderSection (meetup)
+ok??:D
+
 
 
 */
