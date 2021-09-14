@@ -31,4 +31,11 @@ class MeetupService {
     //maping ke List ambil valuenya
     return parsedMeetups.map((item) => Meetup.fromJSON(item)).toList();
   }
+
+  //fecth data by Id Meetup from server
+  Future<Meetup> fetchMeetupById(String id) async {
+    final res = await http.get(Uri.parse('$url/meetups/$id'));
+    final parseMeetupId = json.decode(res.body);
+    return Meetup.fromJSON(parseMeetupId);
+  }
 }

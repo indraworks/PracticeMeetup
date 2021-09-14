@@ -48,7 +48,10 @@ class _MeetupHomeScreenState extends State<MeetupHomeScreen> {
         // ignore: prefer_const_literals_to_create_immutables
         children: [
           _MeetupTitle(),
-          _MeetupList(meetups: meetups),
+          _MeetupList(
+              meetups:
+                  meetups), //nrima dari api hasil dimasukan variable meetups
+          //yg brtipe List, masuk ke class _MeetupList lwat pasing parameter meetups
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -77,6 +80,7 @@ class _MeetupTitle extends StatelessWidget {
   }
 }
 
+//urut2
 class _MeetupCard extends StatelessWidget {
   final Meetup meetup;
 
@@ -105,9 +109,7 @@ class _MeetupCard extends StatelessWidget {
                   'Visit Meetup',
                 ),
                 onPressed: () {
-                  // //old  Navigator.pushNamed(context, MeetupDetailScreen.route);
-                  // Navigator.pushNamed(context, MeetupDetailScreen.route,
-                  //     arguments: meetup.id);
+                  //ktika di klik maka push ke halamanlayar2
                   Navigator.push(context,
                       MaterialPageRoute(builder: (BuildContext context) {
                     return MeetupDetailScreen(meetupId: meetup.id);
@@ -121,9 +123,14 @@ class _MeetupCard extends StatelessWidget {
   }
 }
 
+//urut 1
 //_MeetupList
+//note : dari _MeetupHomeScreenState lewat _MeetupList(meetup:meetups) masuk sini semua
+//berupa list di buat ListView.builder utk dirender di layar screen MeetupHomeScreen
+// utk build card per satuan/per-item dibuat di _MeetupCard(meetup: meetups[index])
+//jadi di buildCard masing2 berasarkan nomor meetups[index] typedata string
 class _MeetupList extends StatelessWidget {
-  //var local list meetup
+  //var local list meetups
   final List<Meetup> meetups;
 
   //meetups yg didapat dari api di jadikan param di cosntructor
@@ -146,7 +153,6 @@ class _MeetupList extends StatelessWidget {
     );
   }
 }
-
 
 /* SEnding MeetupId sebgai argument ,jadi ktika di klik index meetupCard(meetup:metuplist[index])
  maka akan menuju ke mettup_detail screen dan menampilkan tulisan meetupId 
